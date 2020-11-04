@@ -9,7 +9,146 @@ const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
+const { listenerCount } = require("process");
 
+function manager() {
+inquirer
+  .prompt([
+    {
+      name: 'name',
+      message: 'What is the name of the Manager?',
+    },
+    {
+      name: 'officeNumber',
+      message: 'What is his office Number?',
+    },
+    {
+        name: 'id',
+        message: 'What is his ID?',
+      },
+      {
+        name: 'email',
+        message: 'What is his email address?',
+      },
+  ])
+  .then(answers => {
+    const newManager= new Manager(answers.officeNumber, answers.name, answers.id, answers.email)
+    const all_team= []
+    all_team.push(newManager)
+    addEmployee()
+    function addEmployee() {
+    inquirer
+  .prompt([
+      
+    {
+      type: 'list',
+      name: 'option',
+      message: 'Select an option for type of employee or to end adding employees',
+      choices: [
+        'engineer','intern', 'finished adding employees'
+      ],
+    },
+  ])
+  .then(answers => {
+    console.log(answers)
+    if (answers.option==='engineer') {
+        console.log("engineer")
+        inquirer
+  .prompt([
+    {
+      name: 'name',
+      message: 'What is the name of the Engineer?',
+    },
+    {
+      name: 'github',
+      message: 'What is his github username?',
+    },
+    {
+        name: 'id',
+        message: 'What is his ID?',
+      },
+      {
+        name: 'email',
+        message: 'What is his email address?',
+      },
+  ])
+  .then(answers => {
+    const newEngineer= new Engineer(answers.name, answers.id, answers.email, answers.github)
+    all_team.push(newEngineer)
+
+        console.log(all_team)
+        addEmployee()
+  })
+
+    }
+
+    else if (answers.option==='intern') {
+        console.log("intern")
+        inquirer
+        .prompt([
+          {
+            name: 'name',
+            message: 'What is the name of the Intern?',
+          },
+          {
+            name: 'school',
+            message: 'What is his School?',
+          },
+          {
+              name: 'id',
+              message: 'What is his ID?',
+            },
+            {
+              name: 'email',
+              message: 'What is his email address?',
+            },
+        ])
+        .then(answers => {
+          const newIntern= new Intern(answers.name, answers.id, answers.email, answers.school)
+          all_team.push(newIntern)
+      
+              console.log(all_team)
+              addEmployee()
+        })
+
+    }
+
+    else if (answers.option==='finished adding employees') {
+
+        writeOutput(all_team)
+        
+       
+    }
+        
+    else {
+
+        console.error("Fatal Error")
+    }
+  
+    
+  });
+   }
+
+
+
+  });
+}
+
+
+manager()
+
+
+function writeOutput(all_team) {
+const myHTML = render(all_team, "David's Team")
+
+
+fs.writeFile("./output/output.html", myHTML, (err) => {
+   
+    if (err) throw err;
+
+console.log("file successfully created...")
+})
+}
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)

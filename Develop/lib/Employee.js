@@ -12,7 +12,7 @@ class employee {
         return this.name
 
     }
-    get ID() {
+    get Id() {
         return this.id
 
     }

@@ -1,6 +1,6 @@
 const employee = require("./Employee");
 
-class manager extends employee {
+class Manager extends employee {
 
 
     constructor(officeNumber, name, id, email) {
@@ -19,7 +19,7 @@ class manager extends employee {
 }
 
 
-module.exports=manager
+module.exports=Manager
 
 
 
